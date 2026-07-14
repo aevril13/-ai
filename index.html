@@ -54,6 +54,17 @@
 
   h1, h2, h3 { font-weight: 700; }
 
+  /* ---------- 스크롤 진행바 ---------- */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 200;
+  }
+
   /* ---------- 상단 네비게이션 ---------- */
   .navbar {
     position: sticky;
@@ -228,6 +239,33 @@
     font-size: 13px;
   }
 
+  /* ---------- 목표 진행률 바 ---------- */
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+
+  .progress-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--accent-soft);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
   /* ---------- 프로젝트 카드 ---------- */
   .project-grid {
     display: grid;
@@ -345,11 +383,23 @@
     border-radius: var(--radius);
     font-size: 14px;
     transition: border-color 0.2s;
+    font-family: inherit;
+    color: inherit;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
   }
 
   .contact-item:hover { border-color: var(--accent); }
 
   .contact-item .icon { font-size: 16px; }
+
+  .copy-status {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--accent-dark);
+    font-weight: 600;
+  }
 
   /* ---------- 푸터 ---------- */
   footer {
@@ -436,18 +486,21 @@
 </head>
 <body>
 
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <nav class="navbar">
     <div class="nav-inner">
       <span class="logo">권희정</span>
       <div class="nav-right">
         <ul class="nav-links" id="navLinks">
-          <li><a href="#home">홈</a></li>
-          <li><a href="#education">학력·경력</a></li>
-          <li><a href="#skills">기술스택</a></li>
-          <li><a href="#goals">목표</a></li>
-          <li><a href="#interests">취미·관심사</a></li>
-          <li><a href="#contact">연락처</a></li>
+          <li><a href="#home" data-en="Home">홈</a></li>
+          <li><a href="#education" data-en="Education">학력·경력</a></li>
+          <li><a href="#skills" data-en="Skills">기술스택</a></li>
+          <li><a href="#goals" data-en="Goals">목표</a></li>
+          <li><a href="#interests" data-en="Hobbies">취미·관심사</a></li>
+          <li><a href="#contact" data-en="Contact">연락처</a></li>
         </ul>
+        <button class="theme-toggle" id="langToggle" aria-label="언어 전환">EN</button>
         <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환">🌙</button>
         <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
       </div>
@@ -455,21 +508,36 @@
   </nav>
 
   <header class="hero" id="home">
-    <div class="avatar">권</div>
+    <div class="avatar">
+      <svg viewBox="0 0 100 100" width="64" height="64" xmlns="http://www.w3.org/2000/svg" aria-label="고양이 아이콘">
+        <path d="M22 38 L30 12 L46 34 Z" fill="#fff"/>
+        <path d="M78 38 L70 12 L54 34 Z" fill="#fff"/>
+        <ellipse cx="50" cy="56" rx="34" ry="29" fill="#fff"/>
+        <ellipse cx="38" cy="53" rx="3.5" ry="5.5" fill="var(--accent-dark)"/>
+        <ellipse cx="62" cy="53" rx="3.5" ry="5.5" fill="var(--accent-dark)"/>
+        <path d="M46 62 L54 62 L50 68 Z" fill="var(--accent-dark)"/>
+        <path d="M50 68 Q45 74 38 71" stroke="var(--accent-dark)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M50 68 Q55 74 62 71" stroke="var(--accent-dark)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <line x1="10" y1="52" x2="30" y2="55" stroke="#fff" stroke-width="1.5"/>
+        <line x1="10" y1="60" x2="30" y2="60" stroke="#fff" stroke-width="1.5"/>
+        <line x1="90" y1="52" x2="70" y2="55" stroke="#fff" stroke-width="1.5"/>
+        <line x1="90" y1="60" x2="70" y2="60" stroke="#fff" stroke-width="1.5"/>
+      </svg>
+    </div>
     <h1>권희정</h1>
-    <p class="tagline">꾸준히 성장하는 사람, 권희정입니다.</p>
-    <p class="intro">안녕하세요.</p>
+    <p class="tagline" data-en="Kwon Hee-jung, always growing.">꾸준히 성장하는 사람, 권희정입니다.</p>
+    <p class="intro" data-en="Hello.">안녕하세요.</p>
   </header>
 
   <section id="education" class="section reveal">
     <div class="section-inner">
-      <h2>학력 · 경력</h2>
+      <h2 data-en="Education &amp; Experience">학력 · 경력</h2>
       <ul class="timeline">
         <li>
-          <span class="date">2024.03 - 2028.02(예정)</span>
+          <span class="date" data-en="Mar 2024 - Feb 2028 (Expected)">2024.03 - 2028.02(예정)</span>
           <div>
-            <strong>국립부경대학교 재료공학전공</strong>
-            <p>에너지융복합기술공학융합전공(복수전공) · 재학중</p>
+            <strong data-en="Pukyong National University, Materials Engineering">국립부경대학교 재료공학전공</strong>
+            <p data-en="Energy Convergence Engineering (Double Major) · Currently Enrolled">에너지융복합기술공학융합전공(복수전공) · 재학중</p>
           </div>
         </li>
         <!-- 경력·인턴 이력이 있다면 여기에 li 항목을 추가해보세요 -->
@@ -479,26 +547,26 @@
 
   <section id="skills" class="section alt reveal">
     <div class="section-inner">
-      <h2>기술 스택</h2>
+      <h2 data-en="Skills">기술 스택</h2>
 
       <div class="skill-group">
-        <h3>자격증</h3>
+        <h3 data-en="Certifications">자격증</h3>
         <div class="tags">
-          <span class="tag">6시그마 GB(그린벨트) 1급 (2026.04.28)</span>
-          <span class="tag">컴퓨터활용능력 2급 (2026.06.23)</span>
-          <span class="tag">ADsP (2026.06.05)</span>
+          <span class="tag" data-en="Six Sigma GB (Green Belt) Level 1 (Apr 28, 2026)">6시그마 GB(그린벨트) 1급 (2026.04.28)</span>
+          <span class="tag" data-en="Computer Proficiency Level 2 (Jun 23, 2026)">컴퓨터활용능력 2급 (2026.06.23)</span>
+          <span class="tag" data-en="ADsP (Jun 5, 2026)">ADsP (2026.06.05)</span>
         </div>
       </div>
 
       <div class="skill-group">
-        <h3>어학</h3>
+        <h3 data-en="Languages">어학</h3>
         <div class="tags">
-          <span class="tag">TOEIC Speaking IH (150점)</span>
+          <span class="tag" data-en="TOEIC Speaking IH (150 pts)">TOEIC Speaking IH (150점)</span>
         </div>
       </div>
 
       <div class="skill-group">
-        <h3>기타 기술</h3>
+        <h3 data-en="Other Skills">기타 기술</h3>
         <div class="tags">
           <span class="tag">HTML/CSS</span>
           <span class="tag">JavaScript</span>
@@ -509,29 +577,33 @@
 
   <section id="goals" class="section reveal">
     <div class="section-inner">
-      <h2>목표</h2>
+      <h2 data-en="Goals">목표</h2>
+      <div class="progress-wrap">
+        <div class="progress-label" id="progressLabel"></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
       <div class="project-grid">
         <article class="project-card">
-          <h3>여름방학 목표 (~2026.08) <span class="dday" data-target="2026-08-31"></span></h3>
+          <h3><span data-en="Summer Goals (~Aug 2026)">여름방학 목표 (~2026.08)</span> <span class="dday" data-target="2026-08-31"></span></h3>
           <ul class="plain-list" id="summerGoals">
-            <li class="goal-item" data-origin="summer">운전면허 취득</li>
-            <li class="goal-item" data-origin="summer">OPIC IH</li>
-            <li class="goal-item" data-origin="summer">위험물산업기사 필기</li>
-            <li class="goal-item" data-origin="summer">피지컬AI 수료</li>
+            <li class="goal-item" data-origin="summer" data-key="license" data-en="Get driver's license">운전면허 취득</li>
+            <li class="goal-item" data-origin="summer" data-key="opic" data-en="OPIC IH">OPIC IH</li>
+            <li class="goal-item" data-origin="summer" data-key="hazmat" data-en="Hazardous Materials Engineer (Written)">위험물산업기사 필기</li>
+            <li class="goal-item" data-origin="summer" data-key="physicalai" data-en="Complete Physical AI course">피지컬AI 수료</li>
           </ul>
         </article>
         <article class="project-card">
-          <h3>겨울방학 목표 (~2027.02) <span class="dday" data-target="2027-02-28"></span></h3>
+          <h3><span data-en="Winter Goals (~Feb 2027)">겨울방학 목표 (~2027.02)</span> <span class="dday" data-target="2027-02-28"></span></h3>
           <ul class="plain-list" id="winterGoals">
-            <li class="goal-item" data-origin="winter">산업안전기사 취득</li>
-            <li class="goal-item" data-origin="winter">금속재료기사 취득</li>
-            <li class="goal-item" data-origin="winter">현장실습</li>
+            <li class="goal-item" data-origin="winter" data-key="safety" data-en="Get Industrial Safety Engineer license">산업안전기사 취득</li>
+            <li class="goal-item" data-origin="winter" data-key="metal" data-en="Get Metallic Materials Engineer license">금속재료기사 취득</li>
+            <li class="goal-item" data-origin="winter" data-key="intern" data-en="Field internship">현장실습</li>
           </ul>
         </article>
       </div>
 
       <div class="completed-goals" id="completedGoals">
-        <h3>완료한 목표</h3>
+        <h3 data-en="Completed Goals">완료한 목표</h3>
         <ul class="plain-list completed-list" id="completedList"></ul>
       </div>
     </div>
@@ -539,18 +611,18 @@
 
   <section id="interests" class="section alt reveal">
     <div class="section-inner">
-      <h2>취미 · 관심사</h2>
+      <h2 data-en="Hobbies &amp; Interests">취미 · 관심사</h2>
       <div class="interest-columns">
         <div>
-          <h3>취미</h3>
+          <h3 data-en="Hobby">취미</h3>
           <ul class="plain-list">
-            <li>음악 감상</li>
+            <li data-en="Listening to music">음악 감상</li>
           </ul>
         </div>
         <div>
-          <h3>관심사</h3>
+          <h3 data-en="Interests">관심사</h3>
           <ul class="plain-list">
-            <li>고양이 관찰</li>
+            <li data-en="Watching cats">고양이 관찰</li>
           </ul>
         </div>
       </div>
@@ -559,11 +631,12 @@
 
   <section id="contact" class="section reveal">
     <div class="section-inner">
-      <h2>연락처</h2>
+      <h2 data-en="Contact">연락처</h2>
       <div class="contact-list">
-        <a href="mailto:kwonheejjjj@gmail.com" class="contact-item">
+        <button type="button" class="contact-item" id="emailCopyBtn">
           <span class="icon">✉</span> kwonheejjjj@gmail.com
-        </a>
+          <span class="copy-status" id="copyStatus"></span>
+        </button>
         <a href="https://github.com/aevril13" target="_blank" class="contact-item">
           <span class="icon">🐙</span> github.com/aevril13
         </a>
@@ -630,15 +703,48 @@
       localStorage.setItem('theme', next);
     });
 
-    // 맨 위로 가기 버튼 (400px 이상 스크롤하면 나타남)
+    // 맨 위로 가기 버튼 (400px 이상 스크롤하면 나타남) + 스크롤 진행바
     const toTopBtn = document.getElementById('toTop');
+    const scrollProgress = document.getElementById('scrollProgress');
 
     window.addEventListener('scroll', () => {
       toTopBtn.classList.toggle('show', window.scrollY > 400);
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      scrollProgress.style.width = pct + '%';
     });
 
     toTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 이메일 클릭 시 클립보드 복사
+    const emailCopyBtn = document.getElementById('emailCopyBtn');
+    const copyStatus = document.getElementById('copyStatus');
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        // 클립보드 API를 못 쓰는 환경(예: file:// 로 직접 열었을 때)을 위한 대체 방법
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return ok;
+      }
+    }
+
+    emailCopyBtn.addEventListener('click', async () => {
+      const ok = await copyText('kwonheejjjj@gmail.com');
+      copyStatus.textContent = ok ? i18n[currentLang].copied : i18n[currentLang].copyFail;
+      setTimeout(() => { copyStatus.textContent = ''; }, 1500);
     });
 
     // 목표 카드의 D-day 계산 (data-target 날짜까지 남은 일수)
@@ -655,11 +761,22 @@
     const completedGoals = document.getElementById('completedGoals');
     const summerGoals = document.getElementById('summerGoals');
     const winterGoals = document.getElementById('winterGoals');
+    const progressLabel = document.getElementById('progressLabel');
+    const progressFill = document.getElementById('progressFill');
+
+    function updateProgress() {
+      const total = document.querySelectorAll('.goal-item').length;
+      const done = completedList.children.length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      progressLabel.textContent = i18n[currentLang].progress(done, total, pct);
+      progressFill.style.width = pct + '%';
+    }
 
     function saveCompletedGoals() {
-      const texts = Array.from(completedList.children).map(li => li.textContent.trim());
-      localStorage.setItem('completedGoals', JSON.stringify(texts));
-      completedGoals.classList.toggle('show', texts.length > 0);
+      const keys = Array.from(completedList.children).map(li => li.dataset.key);
+      localStorage.setItem('completedGoals', JSON.stringify(keys));
+      completedGoals.classList.toggle('show', keys.length > 0);
+      updateProgress();
     }
 
     function toggleGoal(li) {
@@ -679,15 +796,52 @@
       if (li) toggleGoal(li);
     });
 
-    // 저장된 완료 목표 복원
+    // 저장된 완료 목표 복원 (텍스트가 아니라 고유 key로 저장하기 때문에 언어를 바꿔도 안전하게 매칭됨)
     const savedCompleted = JSON.parse(localStorage.getItem('completedGoals') || '[]');
     document.querySelectorAll('.goal-item').forEach(li => {
-      if (savedCompleted.includes(li.textContent.trim())) {
+      if (savedCompleted.includes(li.dataset.key)) {
         li.classList.add('completed');
         completedList.appendChild(li);
       }
     });
     completedGoals.classList.toggle('show', completedList.children.length > 0);
+
+    // 한국어 / 영어 전환
+    const i18n = {
+      ko: {
+        progress: (done, total, pct) => `${done}/${total} 완료 · ${pct}%`,
+        copied: '복사됨!',
+        copyFail: '복사 실패',
+        label: 'EN'
+      },
+      en: {
+        progress: (done, total, pct) => `${done}/${total} completed · ${pct}%`,
+        copied: 'Copied!',
+        copyFail: 'Copy failed',
+        label: 'KR'
+      }
+    };
+
+    const langToggle = document.getElementById('langToggle');
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'ko';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (!el.dataset.ko) el.dataset.ko = el.textContent;
+        el.textContent = lang === 'en' ? el.dataset.en : el.dataset.ko;
+      });
+      langToggle.textContent = i18n[lang].label;
+      root.lang = lang;
+      localStorage.setItem('lang', lang);
+      updateProgress();
+    }
+
+    langToggle.addEventListener('click', () => {
+      setLanguage(currentLang === 'ko' ? 'en' : 'ko');
+    });
+
+    setLanguage(currentLang);
   </script>
 
 </body>
