@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>권희정 | 자기소개</title>
+<meta name="description" content="국립부경대학교 재료공학전공 권희정의 자기소개 페이지 — 학력, 자격증, 목표, 취미와 관심사를 소개합니다.">
+<meta property="og:title" content="권희정 | 자기소개">
+<meta property="og:description" content="국립부경대학교 재료공학전공 권희정의 자기소개 페이지입니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aevril13.github.io/-ai/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2364798c'/%3E%3Ctext x='50' y='68' font-size='55' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'%3E권%3C/text%3E%3C/svg%3E">
 <style>
   :root {
     --bg: #faf8f4;
@@ -264,6 +271,18 @@
     font-size: 13px;
   }
 
+  /* ---------- 스크롤 등장 애니메이션 ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* ---------- 모바일 대응 ---------- */
   @media (max-width: 700px) {
     .menu-toggle { display: block; }
@@ -321,7 +340,7 @@
     <p class="intro">안녕하세요.</p>
   </header>
 
-  <section id="education" class="section">
+  <section id="education" class="section reveal">
     <div class="section-inner">
       <h2>학력 · 경력</h2>
       <ul class="timeline">
@@ -337,7 +356,7 @@
     </div>
   </section>
 
-  <section id="skills" class="section alt">
+  <section id="skills" class="section alt reveal">
     <div class="section-inner">
       <h2>기술 스택</h2>
 
@@ -367,7 +386,7 @@
     </div>
   </section>
 
-  <section id="goals" class="section">
+  <section id="goals" class="section reveal">
     <div class="section-inner">
       <h2>목표</h2>
       <div class="project-grid">
@@ -392,7 +411,7 @@
     </div>
   </section>
 
-  <section id="interests" class="section alt">
+  <section id="interests" class="section alt reveal">
     <div class="section-inner">
       <h2>취미 · 관심사</h2>
       <div class="interest-columns">
@@ -412,7 +431,7 @@
     </div>
   </section>
 
-  <section id="contact" class="section">
+  <section id="contact" class="section reveal">
     <div class="section-inner">
       <h2>연락처</h2>
       <div class="contact-list">
@@ -451,6 +470,18 @@
 
     // 푸터 연도를 오늘 날짜 기준으로 자동 표시
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 스크롤로 화면에 들어오면 섹션이 서서히 나타나는 효과
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   </script>
 
 </body>
