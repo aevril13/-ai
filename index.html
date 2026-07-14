@@ -198,16 +198,6 @@
     font-size: 15px;
   }
 
-  .hero .intro.typing::after {
-    content: "|";
-    margin-left: 2px;
-    animation: blink 0.8s steps(1) infinite;
-  }
-
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-
   /* ---------- 섹션 공통 ---------- */
   .section {
     padding: 64px 24px;
@@ -536,44 +526,7 @@
     }
   }
 
-  /* ---------- 인쇄 / PDF 저장용 스타일 ---------- */
-  @media print {
-    :root, :root[data-theme="dark"] {
-      --bg: #ffffff;
-      --surface: #ffffff;
-      --surface-alt: #ffffff;
-      --text: #1a1a1a;
-      --text-muted: #444444;
-      --accent: #64798c;
-      --accent-dark: #4f6274;
-      --accent-soft: #eef1f4;
-      --border: #cccccc;
-    }
 
-    .navbar,
-    .to-top,
-    .scroll-progress,
-    .completed-goals {
-      display: none !important;
-    }
-
-    .reveal {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-
-    .project-card,
-    .contact-item,
-    .timeline li {
-      break-inside: avoid;
-      box-shadow: none !important;
-    }
-
-    body {
-      background: #fff;
-    }
-  }
 </style>
 </head>
 <body>
@@ -741,7 +694,7 @@
 
       <div class="qr-wrap">
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https%3A%2F%2Faevril13.github.io%2F-ai%2F" width="120" height="120" alt="이 페이지 QR코드" loading="lazy">
-        <p data-en="Scan to open this page">스캔해서 이 페이지 열기</p>
+        <p data-en="Visit my GitHub">깃허브에 접속하세요</p>
       </div>
     </div>
   </section>
@@ -958,22 +911,6 @@
     });
 
     setLanguage(currentLang);
-
-    // 인사말 타이핑 애니메이션 (언어 설정이 반영된 최종 텍스트를 한 글자씩 출력)
-    const introEl = document.querySelector('.intro');
-    const fullIntroText = introEl.textContent;
-    introEl.textContent = '';
-    introEl.classList.add('typing');
-
-    let charIndex = 0;
-    const typingTimer = setInterval(() => {
-      charIndex++;
-      introEl.textContent = fullIntroText.slice(0, charIndex);
-      if (charIndex >= fullIntroText.length) {
-        clearInterval(typingTimer);
-        introEl.classList.remove('typing');
-      }
-    }, 80);
   </script>
 
 </body>
