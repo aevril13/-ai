@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>권희정 | 자기소개</title>
+<style>
+  :root {
+    --bg: #faf8f4;
+    --surface: #ffffff;
+    --surface-alt: #f2efe9;
+    --text: #322f2b;
+    --text-muted: #7d766c;
+    --accent: #64798c;
+    --accent-dark: #4f6274;
+    --accent-soft: #e9edf0;
+    --border: #e6e0d5;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  ul { list-style: none; }
+
+  h1, h2, h3 { font-weight: 700; }
+
+  /* ---------- 상단 네비게이션 ---------- */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 248, 244, 0.9);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+  }
+
+  .logo {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent-dark);
+  }
+
+  /* ---------- 히어로(상단 소개) 영역 ---------- */
+  .hero {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    font-weight: 700;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .hero .tagline {
+    color: var(--accent-dark);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .hero .intro {
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+
+  /* ---------- 섹션 공통 ---------- */
+  .section {
+    padding: 64px 24px;
+  }
+
+  .section.alt {
+    background: var(--surface-alt);
+  }
+
+  .section-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .section h2 {
+    font-size: 22px;
+    margin-bottom: 32px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-soft);
+  }
+
+  /* ---------- 학력·경력 타임라인 ---------- */
+  .timeline li {
+    display: flex;
+    gap: 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline li:last-child { border-bottom: none; }
+
+  .timeline .date {
+    flex: 0 0 140px;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding-top: 2px;
+  }
+
+  .timeline strong { display: block; margin-bottom: 4px; }
+
+  .timeline p { color: var(--text-muted); font-size: 14px; }
+
+  /* ---------- 기술 스택 ---------- */
+  .skill-group { margin-bottom: 24px; }
+
+  .skill-group:last-child { margin-bottom: 0; }
+
+  .skill-group h3 {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .tag {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  /* ---------- 프로젝트 카드 ---------- */
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+
+  .project-card h3 { font-size: 16px; margin-bottom: 10px; }
+
+  .project-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .project-link {
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ---------- 취미·관심사 ---------- */
+  .interest-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .interest-columns h3 {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .plain-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .project-card .plain-list li:last-child { border-bottom: none; }
+
+  /* ---------- 연락처 ---------- */
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .contact-item:hover { border-color: var(--accent); }
+
+  .contact-item .icon { font-size: 16px; }
+
+  /* ---------- 푸터 ---------- */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ---------- 모바일 대응 ---------- */
+  @media (max-width: 700px) {
+    .menu-toggle { display: block; }
+
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      flex-direction: column;
+      gap: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links.open { max-height: 300px; }
+
+    .nav-links a {
+      padding: 14px 24px;
+      display: block;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .project-grid,
+    .interest-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-inner">
+      <span class="logo">권희정</span>
+      <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">홈</a></li>
+        <li><a href="#education">학력·경력</a></li>
+        <li><a href="#skills">기술스택</a></li>
+        <li><a href="#goals">목표</a></li>
+        <li><a href="#interests">취미·관심사</a></li>
+        <li><a href="#contact">연락처</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="avatar">권</div>
+    <h1>권희정</h1>
+    <p class="tagline">꾸준히 성장하는 사람, 권희정입니다.</p>
+    <p class="intro">안녕하세요.</p>
+  </header>
+
+  <section id="education" class="section">
+    <div class="section-inner">
+      <h2>학력 · 경력</h2>
+      <ul class="timeline">
+        <li>
+          <span class="date">2024.03 - 2028.02(예정)</span>
+          <div>
+            <strong>국립부경대학교 재료공학전공</strong>
+            <p>에너지융복합기술공학융합전공(복수전공) · 재학중</p>
+          </div>
+        </li>
+        <!-- 경력·인턴 이력이 있다면 여기에 li 항목을 추가해보세요 -->
+      </ul>
+    </div>
+  </section>
+
+  <section id="skills" class="section alt">
+    <div class="section-inner">
+      <h2>기술 스택</h2>
+
+      <div class="skill-group">
+        <h3>자격증</h3>
+        <div class="tags">
+          <span class="tag">6시그마 GB(그린벨트) 1급 (2026.04.28)</span>
+          <span class="tag">컴퓨터활용능력 2급 (2026.06.23)</span>
+          <span class="tag">ADsP (2026.06.05)</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>어학</h3>
+        <div class="tags">
+          <span class="tag">TOEIC Speaking IH (150점)</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>기타 기술</h3>
+        <div class="tags">
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="goals" class="section">
+    <div class="section-inner">
+      <h2>목표</h2>
+      <div class="project-grid">
+        <article class="project-card">
+          <h3>여름방학 목표 (~2026.08)</h3>
+          <ul class="plain-list">
+            <li>운전면허 취득</li>
+            <li>OPIC IH</li>
+            <li>위험물산업기사 필기</li>
+            <li>피지컬AI 수료</li>
+          </ul>
+        </article>
+        <article class="project-card">
+          <h3>겨울방학 목표 (~2027.02)</h3>
+          <ul class="plain-list">
+            <li>산업안전기사 취득</li>
+            <li>금속재료기사 취득</li>
+            <li>현장실습</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="interests" class="section alt">
+    <div class="section-inner">
+      <h2>취미 · 관심사</h2>
+      <div class="interest-columns">
+        <div>
+          <h3>취미</h3>
+          <ul class="plain-list">
+            <li>음악 감상</li>
+          </ul>
+        </div>
+        <div>
+          <h3>관심사</h3>
+          <ul class="plain-list">
+            <li>고양이 관찰</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="section-inner">
+      <h2>연락처</h2>
+      <div class="contact-list">
+        <a href="mailto:kwonheejjjj@gmail.com" class="contact-item">
+          <span class="icon">✉</span> kwonheejjjj@gmail.com
+        </a>
+        <a href="https://github.com/aevril13" target="_blank" class="contact-item">
+          <span class="icon">🐙</span> github.com/aevril13
+        </a>
+        <a href="https://www.instagram.com/hihee_jung/" target="_blank" class="contact-item">
+          <span class="icon">🔗</span> instagram.com/hihee_jung
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; <span id="year"></span> 권희정. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // 모바일 메뉴 열고 닫기
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    // 메뉴 항목을 누르면 자동으로 메뉴 닫기 (모바일용)
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // 푸터 연도를 오늘 날짜 기준으로 자동 표시
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
