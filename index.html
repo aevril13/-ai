@@ -25,6 +25,18 @@
     --radius: 12px;
   }
 
+  :root[data-theme="dark"] {
+    --bg: #211f1c;
+    --surface: #2a2825;
+    --surface-alt: #2f2d29;
+    --text: #e9e5dd;
+    --text-muted: #a89f92;
+    --accent: #8aa0b3;
+    --accent-dark: #b9c9d4;
+    --accent-soft: #3a4147;
+    --border: #3d3a35;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   html { scroll-behavior: smooth; }
@@ -52,6 +64,10 @@
     border-bottom: 1px solid var(--border);
   }
 
+  :root[data-theme="dark"] .navbar {
+    background: rgba(33, 31, 28, 0.9);
+  }
+
   .nav-inner {
     max-width: 960px;
     margin: 0 auto;
@@ -64,6 +80,27 @@
   .logo {
     font-weight: 700;
     letter-spacing: 0.5px;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .theme-toggle {
+    background: none;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  .theme-toggle:hover {
+    background: var(--accent-soft);
   }
 
   .menu-toggle {
@@ -205,7 +242,58 @@
     padding: 24px;
   }
 
-  .project-card h3 { font-size: 16px; margin-bottom: 10px; }
+  .project-card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .dday {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+
+  .goal-item {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .goal-item::before {
+    content: "☐ ";
+    color: var(--accent);
+  }
+
+  .goal-item.completed::before {
+    content: "☑ ";
+  }
+
+  .completed-goals {
+    margin-top: 24px;
+    display: none;
+  }
+
+  .completed-goals.show {
+    display: block;
+  }
+
+  .completed-goals h3 {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .completed-list li {
+    color: var(--text-muted);
+    opacity: 0.65;
+    text-decoration: line-through;
+  }
 
   .project-card p {
     color: var(--text-muted);
@@ -271,6 +359,36 @@
     font-size: 13px;
   }
 
+  /* ---------- 맨 위로 가기 버튼 ---------- */
+  .to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 150;
+  }
+
+  .to-top.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
   /* ---------- 스크롤 등장 애니메이션 ---------- */
   .reveal {
     opacity: 0;
@@ -321,15 +439,18 @@
   <nav class="navbar">
     <div class="nav-inner">
       <span class="logo">권희정</span>
-      <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home">홈</a></li>
-        <li><a href="#education">학력·경력</a></li>
-        <li><a href="#skills">기술스택</a></li>
-        <li><a href="#goals">목표</a></li>
-        <li><a href="#interests">취미·관심사</a></li>
-        <li><a href="#contact">연락처</a></li>
-      </ul>
+      <div class="nav-right">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home">홈</a></li>
+          <li><a href="#education">학력·경력</a></li>
+          <li><a href="#skills">기술스택</a></li>
+          <li><a href="#goals">목표</a></li>
+          <li><a href="#interests">취미·관심사</a></li>
+          <li><a href="#contact">연락처</a></li>
+        </ul>
+        <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환">🌙</button>
+        <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
+      </div>
     </div>
   </nav>
 
@@ -391,22 +512,27 @@
       <h2>목표</h2>
       <div class="project-grid">
         <article class="project-card">
-          <h3>여름방학 목표 (~2026.08)</h3>
-          <ul class="plain-list">
-            <li>운전면허 취득</li>
-            <li>OPIC IH</li>
-            <li>위험물산업기사 필기</li>
-            <li>피지컬AI 수료</li>
+          <h3>여름방학 목표 (~2026.08) <span class="dday" data-target="2026-08-31"></span></h3>
+          <ul class="plain-list" id="summerGoals">
+            <li class="goal-item" data-origin="summer">운전면허 취득</li>
+            <li class="goal-item" data-origin="summer">OPIC IH</li>
+            <li class="goal-item" data-origin="summer">위험물산업기사 필기</li>
+            <li class="goal-item" data-origin="summer">피지컬AI 수료</li>
           </ul>
         </article>
         <article class="project-card">
-          <h3>겨울방학 목표 (~2027.02)</h3>
-          <ul class="plain-list">
-            <li>산업안전기사 취득</li>
-            <li>금속재료기사 취득</li>
-            <li>현장실습</li>
+          <h3>겨울방학 목표 (~2027.02) <span class="dday" data-target="2027-02-28"></span></h3>
+          <ul class="plain-list" id="winterGoals">
+            <li class="goal-item" data-origin="winter">산업안전기사 취득</li>
+            <li class="goal-item" data-origin="winter">금속재료기사 취득</li>
+            <li class="goal-item" data-origin="winter">현장실습</li>
           </ul>
         </article>
+      </div>
+
+      <div class="completed-goals" id="completedGoals">
+        <h3>완료한 목표</h3>
+        <ul class="plain-list completed-list" id="completedList"></ul>
       </div>
     </div>
   </section>
@@ -452,6 +578,8 @@
     <p>&copy; <span id="year"></span> 권희정. All rights reserved.</p>
   </footer>
 
+  <button class="to-top" id="toTop" aria-label="맨 위로">↑</button>
+
   <script>
     // 모바일 메뉴 열고 닫기
     const menuToggle = document.getElementById('menuToggle');
@@ -479,6 +607,87 @@
     }, { threshold: 0.15 });
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // 다크모드 토글 (선택한 테마는 localStorage에 저장되어 다음 방문에도 유지됨)
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        root.setAttribute('data-theme', 'dark');
+        themeToggle.textContent = '☀️';
+      } else {
+        root.removeAttribute('data-theme');
+        themeToggle.textContent = '🌙';
+      }
+    }
+
+    applyTheme(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
+
+    themeToggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    // 맨 위로 가기 버튼 (400px 이상 스크롤하면 나타남)
+    const toTopBtn = document.getElementById('toTop');
+
+    window.addEventListener('scroll', () => {
+      toTopBtn.classList.toggle('show', window.scrollY > 400);
+    });
+
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 목표 카드의 D-day 계산 (data-target 날짜까지 남은 일수)
+    document.querySelectorAll('.dday').forEach(el => {
+      const target = new Date(el.dataset.target);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const diffDays = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+      el.textContent = diffDays > 0 ? `D-${diffDays}` : diffDays === 0 ? 'D-DAY' : `D+${Math.abs(diffDays)}`;
+    });
+
+    // 목표 체크리스트: 클릭하면 완료 처리되어 "완료한 목표" 칸으로 이동, localStorage에 저장되어 새로고침해도 유지
+    const completedList = document.getElementById('completedList');
+    const completedGoals = document.getElementById('completedGoals');
+    const summerGoals = document.getElementById('summerGoals');
+    const winterGoals = document.getElementById('winterGoals');
+
+    function saveCompletedGoals() {
+      const texts = Array.from(completedList.children).map(li => li.textContent.trim());
+      localStorage.setItem('completedGoals', JSON.stringify(texts));
+      completedGoals.classList.toggle('show', texts.length > 0);
+    }
+
+    function toggleGoal(li) {
+      if (li.classList.contains('completed')) {
+        li.classList.remove('completed');
+        const target = li.dataset.origin === 'summer' ? summerGoals : winterGoals;
+        target.appendChild(li);
+      } else {
+        li.classList.add('completed');
+        completedList.appendChild(li);
+      }
+      saveCompletedGoals();
+    }
+
+    document.getElementById('goals').addEventListener('click', (e) => {
+      const li = e.target.closest('.goal-item');
+      if (li) toggleGoal(li);
+    });
+
+    // 저장된 완료 목표 복원
+    const savedCompleted = JSON.parse(localStorage.getItem('completedGoals') || '[]');
+    document.querySelectorAll('.goal-item').forEach(li => {
+      if (savedCompleted.includes(li.textContent.trim())) {
+        li.classList.add('completed');
+        completedList.appendChild(li);
+      }
+    });
+    completedGoals.classList.toggle('show', completedList.children.length > 0);
   </script>
 
 </body>
