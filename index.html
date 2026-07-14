@@ -96,22 +96,38 @@
   .nav-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
+  }
+
+  .toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 3px;
   }
 
   .theme-toggle {
     background: none;
     border: none;
-    font-size: 18px;
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 700;
     line-height: 1;
     cursor: pointer;
-    padding: 6px;
-    border-radius: 8px;
-    transition: background 0.2s;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
   }
 
   .theme-toggle:hover {
-    background: var(--accent-soft);
+    background: var(--accent);
+    color: #fff;
   }
 
   .menu-toggle {
@@ -500,8 +516,10 @@
           <li><a href="#interests" data-en="Hobbies">취미·관심사</a></li>
           <li><a href="#contact" data-en="Contact">연락처</a></li>
         </ul>
-        <button class="theme-toggle" id="langToggle" aria-label="언어 전환">EN</button>
-        <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환">🌙</button>
+        <div class="toggle-group">
+          <button class="theme-toggle" id="langToggle" aria-label="언어 전환">EN</button>
+          <button class="theme-toggle" id="themeToggle" aria-label="다크모드 전환">🌙</button>
+        </div>
         <button class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
       </div>
     </div>
