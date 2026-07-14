@@ -39,6 +39,12 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   html { scroll-behavior: smooth; }
 
   body {
@@ -190,6 +196,16 @@
   .hero .intro {
     color: var(--text-muted);
     font-size: 15px;
+  }
+
+  .hero .intro.typing::after {
+    content: "|";
+    margin-left: 2px;
+    animation: blink 0.8s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
   }
 
   /* ---------- 섹션 공통 ---------- */
@@ -417,6 +433,27 @@
     font-weight: 600;
   }
 
+  .qr-wrap {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .qr-wrap img {
+    border-radius: 8px;
+  }
+
+  .qr-wrap p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
   /* ---------- 푸터 ---------- */
   footer {
     text-align: center;
@@ -496,6 +533,45 @@
     .project-grid,
     .interest-columns {
       grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- 인쇄 / PDF 저장용 스타일 ---------- */
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-alt: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #444444;
+      --accent: #64798c;
+      --accent-dark: #4f6274;
+      --accent-soft: #eef1f4;
+      --border: #cccccc;
+    }
+
+    .navbar,
+    .to-top,
+    .scroll-progress,
+    .completed-goals {
+      display: none !important;
+    }
+
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    .project-card,
+    .contact-item,
+    .timeline li {
+      break-inside: avoid;
+      box-shadow: none !important;
+    }
+
+    body {
+      background: #fff;
     }
   }
 </style>
@@ -662,6 +738,11 @@
           <span class="icon">🔗</span> instagram.com/hihee_jung
         </a>
       </div>
+
+      <div class="qr-wrap">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https%3A%2F%2Faevril13.github.io%2F-ai%2F" width="120" height="120" alt="이 페이지 QR코드" loading="lazy">
+        <p data-en="Scan to open this page">스캔해서 이 페이지 열기</p>
+      </div>
     </div>
   </section>
 
@@ -806,6 +887,7 @@
         li.classList.add('completed');
         completedList.appendChild(li);
       }
+      li.setAttribute('aria-checked', li.classList.contains('completed'));
       saveCompletedGoals();
     }
 
@@ -814,11 +896,27 @@
       if (li) toggleGoal(li);
     });
 
+    // 키보드로도 목표 항목을 체크할 수 있도록 지원 (Tab으로 이동, Enter/Space로 토글)
+    document.querySelectorAll('.goal-item').forEach(li => {
+      li.setAttribute('tabindex', '0');
+      li.setAttribute('role', 'checkbox');
+      li.setAttribute('aria-checked', 'false');
+    });
+
+    document.getElementById('goals').addEventListener('keydown', (e) => {
+      const li = e.target.closest('.goal-item');
+      if (li && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        toggleGoal(li);
+      }
+    });
+
     // 저장된 완료 목표 복원 (텍스트가 아니라 고유 key로 저장하기 때문에 언어를 바꿔도 안전하게 매칭됨)
     const savedCompleted = JSON.parse(localStorage.getItem('completedGoals') || '[]');
     document.querySelectorAll('.goal-item').forEach(li => {
       if (savedCompleted.includes(li.dataset.key)) {
         li.classList.add('completed');
+        li.setAttribute('aria-checked', 'true');
         completedList.appendChild(li);
       }
     });
@@ -860,6 +958,22 @@
     });
 
     setLanguage(currentLang);
+
+    // 인사말 타이핑 애니메이션 (언어 설정이 반영된 최종 텍스트를 한 글자씩 출력)
+    const introEl = document.querySelector('.intro');
+    const fullIntroText = introEl.textContent;
+    introEl.textContent = '';
+    introEl.classList.add('typing');
+
+    let charIndex = 0;
+    const typingTimer = setInterval(() => {
+      charIndex++;
+      introEl.textContent = fullIntroText.slice(0, charIndex);
+      if (charIndex >= fullIntroText.length) {
+        clearInterval(typingTimer);
+        introEl.classList.remove('typing');
+      }
+    }, 80);
   </script>
 
 </body>
